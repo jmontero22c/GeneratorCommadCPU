@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guardian_commands_creator/Screens/Generator.dart';
+import 'package:guardian_commands_creator/utils/GlobalDef.dart';
 import 'package:guardian_commands_creator/utils/colors.dart';
 
 void main() {
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
           background: backgroundColor),
         useMaterial3: true,
       ),
-      home:Generator(),
+      home:const Generator(applicationUse: Application.esp),
     );
   }
 }
