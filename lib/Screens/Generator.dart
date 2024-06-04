@@ -1,8 +1,13 @@
+import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:guardian_commands_creator/Controllers/firebase_controller.dart';
 import 'package:guardian_commands_creator/utils/GlobalDef.dart';
 import 'package:guardian_commands_creator/utils/colors.dart';
 import 'package:guardian_commands_creator/utils/utils.dart';
+import 'package:guardian_commands_creator/widgets/Item.dart';
 
 class Generator extends StatefulWidget {
   final Application applicationUse;
@@ -14,6 +19,46 @@ class Generator extends StatefulWidget {
 
 class _GeneratorState extends State<Generator> {
   TextEditingController _controller = TextEditingController();
+
+  String? selectedCommand;
+  List<String> TittleItems = [];
+  List<String> ValueItems = [];
+  int NumberOfItems = 0;
+
+  void setSelectCommand(newValue){
+    FirestoreCloud().getLength("[$newValue]").then((value){
+        NumberOfItems = value;
+
+        for (var i = 0; i < NumberOfItems; i++) {
+          TittleItems.add(''); 
+        }
+      
+        FirestoreCloud().readDatabase("[$newValue]").then((value){
+          // value.
+          value.forEach((key, value) {
+            var index = int.parse(key.split(".")[0])-1;
+            TittleItems[index] = key.split(".")[1];
+            TittleItems[index] = key.split(".")[1];
+          });
+
+          setState(() {
+            selectedCommand = newValue; 
+            NumberOfItems = NumberOfItems;  
+          });
+
+        });
+      } 
+    );   
+  }
+
+  List<DropdownMenuEntry<String>> funFunction(){
+    return Datos_Motor.entries.map((entry) {
+      return DropdownMenuEntry<String>(
+        value: entry.value,
+        label: entry.key,
+      );
+    }).toList();
+  }
 
   @override
   Widget build(BuildContext context) { 
@@ -46,7 +91,32 @@ class _GeneratorState extends State<Generator> {
                       getApplication(widget.applicationUse),
                       style: const TextStyle(color: Colors.white),
                     ),
-                    const Text('Screen Name')
+                    const SizedBox(height: 10,),
+                    DropdownMenu(
+                      dropdownMenuEntries: funFunction(),
+                      onSelected: (Command){
+                        setSelectCommand(Command.toString());
+                        log('Jirwigou');
+                      },
+                    ),  
+                    const SizedBox(height: 10,),
+                    Text(
+                      "Selected Command: [$selectedCommand]", 
+                      style: const TextStyle(
+                        color: Colors.white
+                      ),
+                    ),
+                    
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                            children: List.generate(NumberOfItems, (index) {
+                            return ItemTextField(hintText: TittleItems[index]);
+                          }),
+                        ),
+                      ),
+                    ),
+             
                   ],
                 ),
               ),

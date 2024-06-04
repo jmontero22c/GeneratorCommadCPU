@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "25903687398",
+    "project_id": "generator-commands-spg",
+    "storage_bucket": "generator-commands-spg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25903687398:android:83331e03f893bb96e1bd27",
+        "android_client_info": {
+          "package_name": "com.example.guardian_commands_creator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAH3ni04M5TT0Q7SUGpBwa5HK_dIPzuHL4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
