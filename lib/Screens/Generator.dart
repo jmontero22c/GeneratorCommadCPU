@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -24,6 +22,13 @@ class _GeneratorState extends State<Generator> {
   List<String> TittleItems = [];
   List<String> ValueItems = [];
   int NumberOfItems = 0;
+  String commandShowing = "";
+
+  void setCommandShowing(String newCommand){
+    setState(() {
+      commandShowing = newCommand;
+    });
+  }
 
   void setSelectCommand(newValue){
     FirestoreCloud().getLength("[$newValue]").then((value){
@@ -34,7 +39,6 @@ class _GeneratorState extends State<Generator> {
         }
       
         FirestoreCloud().readDatabase("[$newValue]").then((value){
-          // value.
           value.forEach((key, value) {
             var index = int.parse(key.split(".")[0])-1;
             TittleItems[index] = key.split(".")[1];
@@ -74,16 +78,20 @@ class _GeneratorState extends State<Generator> {
               fit: FlexFit.tight,
               flex: 1,
               child: Container(
-                margin: EdgeInsets.only(right: 10),
+                margin: const EdgeInsets.only(right: 10, top: 10, bottom: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                 decoration: const BoxDecoration(
-                 
-                  border: Border(
-                    right: BorderSide(
-                    width: 0.5  ,
-                    color: Colors.blue,
-                    style: BorderStyle.solid,
-                  )
-                  )
+                  color: Colors.black,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue, 
+                      blurRadius: 12,
+                      blurStyle: BlurStyle.solid,
+                      spreadRadius: 1
+                    )
+                  ],
+                  borderRadius: BorderRadius.all(Radius.circular(10))
+
                 ),
                 child: Column(
                   children: [
@@ -94,10 +102,11 @@ class _GeneratorState extends State<Generator> {
                     const SizedBox(height: 10,),
                     DropdownMenu(
                       dropdownMenuEntries: funFunction(),
+                      textStyle: const TextStyle(color: primaryColor),
                       onSelected: (Command){
                         setSelectCommand(Command.toString());
-                        log('Jirwigou');
                       },
+                    
                     ),  
                     const SizedBox(height: 10,),
                     Text(
@@ -106,7 +115,7 @@ class _GeneratorState extends State<Generator> {
                         color: Colors.white
                       ),
                     ),
-                    
+                    const SizedBox(height: 10,),
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(
@@ -116,6 +125,58 @@ class _GeneratorState extends State<Generator> {
                         ),
                       ),
                     ),
+
+                    //Button Generate
+                    // ElevatedButton(
+                    //   onPressed: () {
+                          
+                    //   },
+                    //   style: ButtonStyle(
+                    //     backgroundColor: MaterialStateProperty.resolveWith((states) {
+                    //       // If the button is pressed, return green, otherwise blue
+                    //       if (states.contains(MaterialState.pressed)) {
+                    //         return Color.fromARGB(255, 10, 0, 87);
+                    //       }
+                    //       return Colors.blue;
+                    //     }),
+                    //     shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)))
+                    //   ),
+                    //   child:const Text(
+                    //     'Generate', 
+                    //       style: TextStyle(
+                    //         color: primaryColor,
+                    //         fontSize: 18,
+                    //         fontWeight: FontWeight.bold
+                    //       ),
+                    //     ),
+                    // )
+                    GestureDetector(
+                      onTap: (){
+                        setCommandShowing(generateCommand(ValueItems));
+                      },
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                          height: 40,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: const Text(
+                          'Generate', 
+                            style: TextStyle(
+                              color: primaryColor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
              
                   ],
                 ),
@@ -126,33 +187,50 @@ class _GeneratorState extends State<Generator> {
             Flexible(
               fit: FlexFit.tight,
               flex: 3,
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Result: ', style: TextStyle(color: Colors.white)),
-                    const SizedBox(height: 10),
-                    Container(
-                      height: 100,
-                      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: const SingleChildScrollView(                  
-                        child: SelectableText(
-                          'DM.myRxData.txt="[D;9600;222;192.168.255.124;255.255.255.255;192.168.168.168;;3;;5;;3;127;1;0;10;;1;500;1;400;;;;;;;;;5;D]"',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                      
-                            color: primaryColor
+              child: Column(
+                children: [
+                  Flexible(
+                    flex: 10,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Result: ', style: TextStyle(color: Colors.white)),
+                          const SizedBox(height: 10),
+                          Container(
+                            height: 100,
+                            width: double.infinity,
+                            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: SingleChildScrollView(                  
+                              child: SelectableText(
+                                commandShowing,
+                                textAlign: TextAlign.left,
+                                style: const TextStyle(
+                                  color: primaryColor
+                                ),
+                                
+                              ),
+                            ),                
                           ),
-                        ),
-                      ),                ),
-                  ],
-                ),
+                         
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Flexible(
+                    flex: 0,
+                    child: Text(
+                      'Made by ElYisus1001 - Todos los derechos reservados ©',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  )
+                ],
               ),
             )
           ],

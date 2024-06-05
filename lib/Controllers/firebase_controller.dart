@@ -21,8 +21,6 @@ class FirestoreCloud {
     } catch (e) {
       log("Something went wrong trying get Length: $e");
     }
-    
-
     return len;
   }
 
