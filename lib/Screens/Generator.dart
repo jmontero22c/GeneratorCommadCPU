@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:guardian_commands_creator/utils/GlobalDef.dart';
 import 'package:guardian_commands_creator/utils/colors.dart';
 import 'package:guardian_commands_creator/utils/utils.dart';
@@ -13,8 +12,6 @@ class Generator extends StatefulWidget {
 }
 
 class _GeneratorState extends State<Generator> {
-  TextEditingController _controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) { 
     return Scaffold(
@@ -29,7 +26,7 @@ class _GeneratorState extends State<Generator> {
               fit: FlexFit.tight,
               flex: 1,
               child: Container(
-                margin: EdgeInsets.only(right: 10),
+                margin: const EdgeInsets.only(right: 10),
                 decoration: const BoxDecoration(
                  
                   border: Border(
