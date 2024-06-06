@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:guardian_commands_creator/utils/GlobalDef.dart';
 
 String getApplication(Application application){
@@ -18,13 +19,13 @@ String getApplication(Application application){
   return result;
 }
 
-String generateCommand(List<String> ValueItems){
-  String result = "[SPD";
-  
-  ValueItems.forEach((element) { 
-    result += ";${element}";
-  });
+String generateCommand(List<TextEditingController> valueItems) {
+  final StringBuffer result = StringBuffer('DM.myRxData.txt="[SPD');
 
-  result += ";SPD]";
-  return result;
+  for (var controller in valueItems) {
+    result.write(";${controller.text}");
+  }
+
+  result.write(';SPD]"');
+  return result.toString();
 }

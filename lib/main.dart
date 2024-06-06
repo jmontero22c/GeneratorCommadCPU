@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
           background: backgroundColor),
         useMaterial3: true,
       ),
+      debugShowCheckedModeBanner: false,
       home:const Generator(applicationUse: Application.esp),
     );
   }
