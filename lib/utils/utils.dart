@@ -19,14 +19,16 @@ String getApplication(Application application){
   return result;
 }
 
-String generateCommand(List<TextEditingController> valueItems, String mainCommand) {
-  mainCommand.split('SPD_INFO')[1];
-  final StringBuffer result = StringBuffer('DM.myRxData.txt="[SPDI${mainCommand.split('SPD_INFO')[1]}');
+String generateCommand(List<TextEditingController> valueItems, String? wholeCommand) {
+  if (wholeCommand == null) {return "";}
+
+  final String headerResponse = wholeCommand.split('SPD_INFO')[1];
+  final StringBuffer result = StringBuffer('DM.myRxData.txt="[SPDI$headerResponse');
 
   for (var controller in valueItems) {
     result.write(";${controller.text}");
   }
 
-  result.write(';SPD]"');
+  result.write(';SPDI$headerResponse]"');
   return result.toString();
 }
