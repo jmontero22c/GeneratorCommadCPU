@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:guardian_commands_creator/Model/model.dart';
+import 'package:provider_base_tools/provider_base_tools.dart';
 import 'firebase_options.dart';
 import 'package:guardian_commands_creator/Screens/Generator.dart';
 import 'package:guardian_commands_creator/utils/GlobalDef.dart';
@@ -10,7 +12,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ListTextFieldInputs(),
+      child: const MyApp()
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
