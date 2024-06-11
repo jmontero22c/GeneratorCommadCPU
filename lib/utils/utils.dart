@@ -19,8 +19,9 @@ String getApplication(Application application){
   return result;
 }
 
-String generateCommand(List<TextEditingController> valueItems) {
-  final StringBuffer result = StringBuffer('DM.myRxData.txt="[SPD');
+String generateCommand(List<TextEditingController> valueItems, String mainCommand) {
+  mainCommand.split('SPD_INFO')[1];
+  final StringBuffer result = StringBuffer('DM.myRxData.txt="[SPDI${mainCommand.split('SPD_INFO')[1]}');
 
   for (var controller in valueItems) {
     result.write(";${controller.text}");

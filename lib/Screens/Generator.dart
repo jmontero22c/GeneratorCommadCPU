@@ -159,7 +159,7 @@ class _GeneratorState extends State<Generator> {
                     //     ),
                     // )
                     GestureDetector(
-                      onTap: () => setCommandShowing(generateCommand(textControllers)),
+                      onTap: () => setCommandShowing(generateCommand(textControllers, selectedCommand!)),
                       child: const GenerateButton()
                     )
                   ],
