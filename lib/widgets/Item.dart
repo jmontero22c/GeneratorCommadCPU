@@ -26,7 +26,7 @@ class _ItemTextFieldState extends State<ItemTextField> {
           labelText: widget.hintText,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
           focusColor: primaryColor,
-          labelStyle: TextStyle(color: Color.fromARGB(255, 172, 172, 172))
+          labelStyle: const TextStyle(color: Color.fromARGB(255, 172, 172, 172))
         ),
         cursorColor: lineColor,
         style: const TextStyle(
