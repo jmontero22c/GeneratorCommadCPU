@@ -20,9 +20,11 @@ class _ItemTextFieldState extends State<ItemTextField> {
     return Container(
       height: 50,
       margin: const EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 10),
       child: TextField(
         controller: widget.textEditingController,
         decoration: InputDecoration(
+          labelText: widget.hintText,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
           focusColor: primaryColor,
           labelText: widget.hintText,
